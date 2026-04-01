@@ -24,7 +24,7 @@ body { font-family:sans-serif; max-width:450px; margin:auto; padding:15px; backg
 #splash img { width: 180px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 #splash h2 { font-size: 30px; color: var(--verde); font-family: 'Great Vibes', cursive; }
 
-/* CABEÇALHO E LOGO */
+/* CABEÇALHO */
 h1 { text-align:center; margin-bottom:10px; }
 h1 .logo { max-width:160px; width:100%; height:auto; border-radius:50%; display:block; margin:0 auto; border: 2px solid var(--verde); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:normal; font-family:'Great Vibes', cursive; }
@@ -35,8 +35,8 @@ h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:nor
 .tab { padding:8px 15px; background:#e5e7eb; border-radius:10px; cursor:pointer; white-space: nowrap; font-size: 14px; }
 .tab.active { background:var(--verde); color:white; font-weight: bold; }
 
-/* CARTÕES DE PRODUTOS */
-.card { background:white; border-radius:15px; margin-bottom:20px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.05); }
+/* CARTÕES */
+.card { background:white; border-radius:15px; margin-bottom:20px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.05); position: relative; }
 .img-p { width:100%; height:250px; object-fit:cover; cursor:pointer; }
 .info { padding:15px; text-align:center; }
 .btn-add { background:var(--verde); color:white; border:none; padding:12px; width:100%; border-radius:10px; cursor:pointer; font-weight: bold; font-size: 16px; }
@@ -45,26 +45,24 @@ h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:nor
 .badge { position:absolute; left:10px; top:10px; background:#ef4444; color:white; padding:5px 10px; border-radius:8px; font-size:12px; font-weight:bold; }
 .fav { position:absolute; right:10px; top:10px; font-size:24px; cursor:pointer; filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); }
 
-/* PREÇOS CORRIGIDOS */
-.precos-container { margin: 10px 0; display: flex; flex-direction: column; align-items: center; }
-.preco-rasurado { text-decoration: line-through; color: #94a3b8; font-size: 14px; opacity: 0.8; margin: 0; }
-.preco-novo { color: #ef4444; font-weight: bold; font-size: 20px; margin: 2px 0; }
-.preco-normal { font-weight: bold; font-size: 20px; margin: 10px 0; color: #1f2937; }
+/* PREÇOS (O TEU PEDIDO ESPECÍFICO) */
+.preco-rasurado { text-decoration: line-through; color: #9ca3af; font-size: 14px; margin: 0; opacity: 0.7; display: block; }
+.preco-novo { color: #ef4444; font-weight: bold; font-size: 20px; margin: 2px 0 10px 0; display: block; }
+.preco-normal { font-weight: bold; font-size: 20px; margin: 10px 0; color: #1f2937; display: block; }
 
 /* PAGINAÇÃO */
 .paginacao { display:flex; justify-content:center; gap:8px; margin:20px 0; flex-wrap:wrap; }
 .btn-pag { padding:8px 14px; border:1px solid #ddd; background:white; border-radius:8px; cursor:pointer; }
 .btn-pag.active { background:var(--verde); color:white; border-color: var(--verde); }
 
-/* MODAL */
-.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000; }
-.modal img { max-width:95%; max-height:90%; border-radius:10px; border: 2px solid white; }
-
 /* CARRINHO */
 .carrinho { background:white; padding:20px; border-radius:20px; margin-top:30px; border: 2px solid var(--verde); }
-.btn-w { background:#25D366; color:white; padding:14px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-size: 16px; font-weight: bold; }
 .item-cart { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
 input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; box-sizing: border-box; }
+.btn-w { background:#25D366; color:white; padding:14px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-size: 16px; font-weight: bold; }
+
+.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000; }
+.modal img { max-width:95%; max-height:90%; border-radius:10px; }
 </style>
 </head>
 <body>
@@ -88,30 +86,14 @@ input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; bo
   <h2>🛒 O Teu Pedido</h2>
   <div id="itens-carrinho"></div>
   <p id="total-carrinho" style="font-size: 18px; margin: 15px 0; font-weight: bold;"></p>
-  
   <input id="cliente" placeholder="O teu nome">
-  <input id="telefone" placeholder="Telemóvel">
-  <input id="morada" placeholder="Morada completa">
-  
-  <select id="envio" onchange="atualizar()">
-    <option>Levantamento (Grátis)</option>
-    <option>CTT Normal</option>
-    <option>CTT Registado</option>
-  </select>
-  
   <button onclick="finalizar()" class="btn-w">Pedir via WhatsApp</button>
   <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626;">❌ Limpar Carrinho</button>
 </div>
 
-<div class="modal" id="modal" onclick="this.style.display='none'">
-  <img id="imgGrande">
-</div>
+<div class="modal" id="modal" onclick="this.style.display='none'"><img id="imgGrande"></div>
 
 <script>
-window.addEventListener("load", () => {
-  setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 2000);
-});
-
 const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
 
 let db = [];
@@ -149,6 +131,7 @@ fetch(API).then(r=>r.json()).then(data => {
         <div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudarCat('${c}')">${c}</div>
     `).join("");
 
+    document.getElementById("splash").style.display = "none";
     render();
     atualizar();
 });
@@ -161,27 +144,79 @@ function mudarCat(c) {
     render();
 }
 
-function irParaPagina(num){ paginaAtual=num; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function irParaPagina(n){ paginaAtual = n; render(); window.scrollTo({top:0,behavior:'smooth'}); }
 
 function render() {
     let busca = document.getElementById("pesquisa").value.toLowerCase();
     let lista = db.filter(p => {
-        let match = p.nome.toLowerCase().includes(busca);
-        if (categoriaAtual === "🔥 Promoções") return p.isPromo && match;
-        return p.categoria === categoriaAtual && match;
+        let m = p.nome.toLowerCase().includes(busca);
+        if (categoriaAtual === "🔥 Promoções") return p.isPromo && m;
+        return p.categoria === categoriaAtual && m;
     });
 
-    let totalPaginas = Math.ceil(lista.length / itensPorPagina);
-    let inicio = (paginaAtual - 1) * itensPorPagina;
-    let itens = lista.slice(inicio, inicio + itensPorPagina);
+    let totalP = Math.ceil(lista.length / itensPorPagina);
+    let itens = lista.slice((paginaAtual-1)*itensPorPagina, paginaAtual*itensPorPagina);
     
-    let html = "";
+    let h = "";
     itens.forEach(p => {
         let fav = favs.includes(p.nome) ? "❤️" : "🤍";
-        let precoHTML = "";
+        let precoHTML = (p.isPromo && p.precoPromo > 0) ? 
+            `<span class="preco-rasurado">${p.preco.toFixed(2)}€</span><span class="preco-novo">${p.precoPromo.toFixed(2)}€ 🔥</span>` : 
+            `<span class="preco-normal">${p.preco.toFixed(2)}€</span>`;
 
-        if (p.isPromo && p.precoPromo > 0) {
-            precoHTML = `
-                <div class="precos-container">
-                    <p class="preco-rasurado">${p.preco.toFixed(2)}€</p>
-                    <p class="preco-novo">${p.precoPromo.toFixed(2)}
+        h += `<div class="card">
+            <div class="card-wrap">
+                ${p.isPromo ? '<div class="badge">PROMOÇÃO</div>' : ''}
+                <span class="fav" onclick="toggleFav('${p.nome}')">${fav}</span>
+                <img src="${p.img}" class="img-p" onclick="verImg('${p.img}')">
+            </div>
+            <div class="info">
+                <h3 style="margin:0; font-size:16px;">#${p.id} - ${p.nome}</h3>
+                <div style="margin:10px 0;">${precoHTML}</div>
+                <button class="btn-add" onclick="add(${p.id})">Adicionar</button>
+            </div>
+        </div>`;
+    });
+    document.getElementById("loja").innerHTML = h || "<p style='text-align:center;'>Vazio.</p>";
+    
+    let pagH = "";
+    for(let i=1; i<=totalP; i++) {
+        pagH += `<button class="btn-pag ${i===paginaAtual?'active':''}" onclick="irParaPagina(${i})">${i}</button>`;
+    }
+    document.getElementById("paginacao").innerHTML = pagH;
+}
+
+function add(id) {
+    let p = db.find(x => x.id === id);
+    let v = (p.isPromo && p.precoPromo > 0) ? p.precoPromo : p.preco;
+    let ex = cart.find(x => x.id === id);
+    if(ex) ex.q++; else cart.push({id:p.id, nome:p.nome, preco:v, q:1});
+    atualizar();
+}
+
+function atualizar() {
+    localStorage.setItem("cart_artes", JSON.stringify(cart));
+    let t = 0; let h = "";
+    cart.forEach((item, i) => {
+        t += (item.preco * item.q);
+        h += `<div class="item-cart"><span>${item.nome} (x${item.q})</span><button onclick="remover(${i})" style="border:none;background:none;color:red;">Remover</button></div>`;
+    });
+    document.getElementById("itens-carrinho").innerHTML = h || "Carrinho vazio";
+    document.getElementById("total-carrinho").innerText = `Total: ${t.toFixed(2)}€`;
+}
+
+function remover(i) { cart.splice(i,1); atualizar(); }
+function limparCarrinho() { cart = []; atualizar(); }
+function toggleFav(n) { if(favs.includes(n)) favs = favs.filter(f=>f!==n); else favs.push(n); render(); }
+function verImg(s) { document.getElementById("modal").style.display="flex"; document.getElementById("imgGrande").src=s; }
+
+function finalizar() {
+    let n = document.getElementById("cliente").value;
+    if(!n) return alert("Diz-me o teu nome!");
+    let msg = `*Pedido: Cantinho das Artes*\n*Cliente:* ${n}\n\n`;
+    cart.forEach(i => { msg += `- ${i.nome} (x${i.q})\n`; });
+    window.open(`https://wa.me/351932299225?text=${encodeURIComponent(msg)}`);
+}
+</script>
+</body>
+</html>
