@@ -1,222 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cantinho das Artes</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantinho das Artes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        :root { --verde: #10b981; --fundo: #f0fdf4; }
+        body { font-family: sans-serif; max-width: 450px; margin: auto; padding: 15px; background: var(--fundo); }
+        
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        #splash img { width: 150px; border-radius: 50%; border: 3px solid var(--verde); }
 
-<link rel="icon" type="image/jpeg" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
-<link rel="apple-touch-icon" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
-<link rel="manifest" href="manifest.json">
+        h1 { text-align: center; }
+        .logo { max-width: 140px; border-radius: 50%; border: 2px solid var(--verde); display: block; margin: 0 auto; }
+        .titulo { margin-top: 10px; color: var(--verde); font-size: 32px; font-family: 'Great Vibes', cursive; }
 
-<meta name="theme-color" content="#10b981">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
+        .tabs { display: flex; gap: 8px; overflow-x: auto; margin: 15px 0; padding-bottom: 5px; }
+        .tab { padding: 10px 18px; background: #e5e7eb; border-radius: 12px; cursor: pointer; white-space: nowrap; font-size: 14px; }
+        .tab.active { background: var(--verde); color: white; font-weight: bold; }
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+        .card { background: white; border-radius: 18px; margin-bottom: 25px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); position: relative; }
+        .img-p { width: 100%; height: 280px; object-fit: cover; display: block; }
+        .info { padding: 15px; text-align: center; }
 
-<style>
-:root { --verde:#10b981; --fundo:#f0fdf4; }
-body { font-family:sans-serif; max-width:450px; margin:auto; padding:15px; background:var(--fundo); }
+        /* ESTILO DOS PREÇOS */
+        .preco-box { margin: 10px 0; display: flex; flex-direction: column; align-items: center; }
+        .preco-antigo { text-decoration: line-through; color: #94a3b8; font-size: 14px; margin: 0; }
+        .preco-novo { color: #dc2626; font-weight: bold; font-size: 22px; margin: 2px 0; }
+        .preco-normal { font-weight: bold; font-size: 22px; color: #1e293b; }
 
-/* TELA DE CARREGAMENTO */
-#splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-#splash img { width: 180px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-#splash h2 { font-size: 30px; color: var(--verde); font-family: 'Great Vibes', cursive; }
+        .btn-add { background: var(--verde); color: white; border: none; padding: 14px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        .badge { position: absolute; left: 12px; top: 12px; background: #ef4444; color: white; padding: 5px 12px; border-radius: 10px; font-size: 12px; font-weight: bold; }
+        
+        .paginacao { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
+        .btn-pag { padding: 8px 15px; border: 1px solid #ddd; background: white; border-radius: 8px; cursor: pointer; }
+        .btn-pag.active { background: var(--verde); color: white; }
 
-/* CABEÇALHO */
-h1 { text-align:center; margin-bottom:10px; }
-h1 .logo { max-width:160px; width:100%; height:auto; border-radius:50%; display:block; margin:0 auto; border: 2px solid var(--verde); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:normal; font-family:'Great Vibes', cursive; }
-
-/* INTERFACE */
-.search { width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing: border-box; }
-.tabs { display:flex; gap:5px; overflow:auto; margin-bottom:10px; padding-bottom:5px; }
-.tab { padding:8px 15px; background:#e5e7eb; border-radius:10px; cursor:pointer; white-space: nowrap; font-size: 14px; }
-.tab.active { background:var(--verde); color:white; font-weight: bold; }
-
-/* CARTÕES */
-.card { background:white; border-radius:15px; margin-bottom:20px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.05); position: relative; }
-.img-p { width:100%; height:250px; object-fit:cover; cursor:pointer; }
-.info { padding:15px; text-align:center; }
-.btn-add { background:var(--verde); color:white; border:none; padding:12px; width:100%; border-radius:10px; cursor:pointer; font-weight: bold; font-size: 16px; }
-
-.card-wrap { position:relative; }
-.badge { position:absolute; left:10px; top:10px; background:#ef4444; color:white; padding:5px 10px; border-radius:8px; font-size:12px; font-weight:bold; }
-.fav { position:absolute; right:10px; top:10px; font-size:24px; cursor:pointer; filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); }
-
-/* PREÇOS (O TEU PEDIDO ESPECÍFICO) */
-.preco-rasurado { text-decoration: line-through; color: #9ca3af; font-size: 14px; margin: 0; opacity: 0.7; display: block; }
-.preco-novo { color: #ef4444; font-weight: bold; font-size: 20px; margin: 2px 0 10px 0; display: block; }
-.preco-normal { font-weight: bold; font-size: 20px; margin: 10px 0; color: #1f2937; display: block; }
-
-/* PAGINAÇÃO */
-.paginacao { display:flex; justify-content:center; gap:8px; margin:20px 0; flex-wrap:wrap; }
-.btn-pag { padding:8px 14px; border:1px solid #ddd; background:white; border-radius:8px; cursor:pointer; }
-.btn-pag.active { background:var(--verde); color:white; border-color: var(--verde); }
-
-/* CARRINHO */
-.carrinho { background:white; padding:20px; border-radius:20px; margin-top:30px; border: 2px solid var(--verde); }
-.item-cart { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; box-sizing: border-box; }
-.btn-w { background:#25D366; color:white; padding:14px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-size: 16px; font-weight: bold; }
-
-.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000; }
-.modal img { max-width:95%; max-height:90%; border-radius:10px; }
-</style>
+        .carrinho { background: white; padding: 20px; border-radius: 20px; border: 2px solid var(--verde); margin-top: 20px; }
+        input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+    </style>
 </head>
 <body>
 
-<div id="splash">
-  <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
-  <h2>Cantinho das Artes 👋</h2>
-</div>
+<div id="splash"><img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg"></div>
 
 <h1>
-  <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo">
-  <div class="titulo">🧵 Cantinho das Artes ✂️</div>
+    <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo">
+    <div class="titulo">Cantinho das Artes</div>
 </h1>
 
-<input class="search" id="pesquisa" placeholder="🔍 Procurar as tuas artes favoritas..." oninput="irParaPagina(1)">
 <div class="tabs" id="tabs"></div>
 <div id="loja"></div>
 <div class="paginacao" id="paginacao"></div>
 
 <div class="carrinho">
-  <h2>🛒 O Teu Pedido</h2>
-  <div id="itens-carrinho"></div>
-  <p id="total-carrinho" style="font-size: 18px; margin: 15px 0; font-weight: bold;"></p>
-  <input id="cliente" placeholder="O teu nome">
-  <button onclick="finalizar()" class="btn-w">Pedir via WhatsApp</button>
-  <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626;">❌ Limpar Carrinho</button>
+    <h2 style="margin:0; color:var(--verde);">🛒 O Teu Pedido</h2>
+    <div id="itens-carrinho" style="margin:15px 0;"></div>
+    <p id="total-carrinho" style="font-size:20px; font-weight:bold;"></p>
+    <input id="cliente" placeholder="O teu nome">
+    <button onclick="finalizar()" style="background:#25D366; color:white; border:none; width:100%; padding:15px; border-radius:12px; font-weight:bold; margin-top:10px; cursor:pointer;">Pedir no WhatsApp</button>
 </div>
 
-<div class="modal" id="modal" onclick="this.style.display='none'"><img id="imgGrande"></div>
-
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
+    const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec';
+    let db = [], cart = [], catAtiva = "", pagina = 1, pPorPagina = 10;
 
-let db = [];
-let cart = JSON.parse(localStorage.getItem("cart_artes")) || [];
-let favs = JSON.parse(localStorage.getItem("favs_artes")) || [];
-let categoriaAtual = localStorage.getItem("ultimaCat_artes") || ""; 
-let paginaAtual = 1;
-const itensPorPagina = 10;
+    function limparPreco(v) { return parseFloat(String(v).replace('€','').replace(',','.').trim()) || 0; }
 
-function format(v) {
-    if(!v) return 0;
-    return parseFloat(String(v).replace('€','').replace(',','.').trim()) || 0;
-}
+    fetch(API).then(r => r.json()).then(data => {
+        db = data.map(p => ({
+            ...p,
+            preco: limparPreco(p.preco),
+            precoPromo: limparPreco(p.precoPromo),
+            promo: String(p.promo).toLowerCase().trim() === "sim"
+        }));
 
-fetch(API).then(r=>r.json()).then(data => {
-    db = data.map(p => ({
-        ...p,
-        id: parseInt(p.id),
-        preco: format(p.preco),
-        precoPromo: format(p.precoPromo),
-        isPromo: String(p.promo).toLowerCase().trim() === "sim",
-        categoria: p.categoria || "Outros"
-    }));
+        let cats = [...new Set(db.map(p => p.categoria))];
+        let menu = db.some(p => p.promo) ? ["🔥 Promoções", ...cats] : cats;
+        catAtiva = menu[0];
 
-    let catsBD = [...new Set(db.map(p => p.categoria))];
-    let temPromo = db.some(p => p.isPromo);
-    
-    let menu = [];
-    if (temPromo) menu.push("🔥 Promoções");
-    menu = menu.concat(catsBD);
+        document.getElementById("tabs").innerHTML = menu.map(c => `
+            <div class="tab ${c === catAtiva ? 'active' : ''}" onclick="mudarCat('${c}')">${c}</div>
+        `).join("");
 
-    if(!categoriaAtual || !menu.includes(categoriaAtual)) categoriaAtual = menu[0];
-
-    document.getElementById("tabs").innerHTML = menu.map(c => `
-        <div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudarCat('${c}')">${c}</div>
-    `).join("");
-
-    document.getElementById("splash").style.display = "none";
-    render();
-    atualizar();
-});
-
-function mudarCat(c) {
-    categoriaAtual = c;
-    paginaAtual = 1;
-    localStorage.setItem("ultimaCat_artes", c);
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    render();
-}
-
-function irParaPagina(n){ paginaAtual = n; render(); window.scrollTo({top:0,behavior:'smooth'}); }
-
-function render() {
-    let busca = document.getElementById("pesquisa").value.toLowerCase();
-    let lista = db.filter(p => {
-        let m = p.nome.toLowerCase().includes(busca);
-        if (categoriaAtual === "🔥 Promoções") return p.isPromo && m;
-        return p.categoria === categoriaAtual && m;
+        document.getElementById("splash").style.display = "none";
+        render();
     });
 
-    let totalP = Math.ceil(lista.length / itensPorPagina);
-    let itens = lista.slice((paginaAtual-1)*itensPorPagina, paginaAtual*itensPorPagina);
-    
-    let h = "";
-    itens.forEach(p => {
-        let fav = favs.includes(p.nome) ? "❤️" : "🤍";
-        let precoHTML = (p.isPromo && p.precoPromo > 0) ? 
-            `<span class="preco-rasurado">${p.preco.toFixed(2)}€</span><span class="preco-novo">${p.precoPromo.toFixed(2)}€ 🔥</span>` : 
-            `<span class="preco-normal">${p.preco.toFixed(2)}€</span>`;
+    function mudarCat(c) { catAtiva = c; pagina = 1; render(); }
 
-        h += `<div class="card">
-            <div class="card-wrap">
-                ${p.isPromo ? '<div class="badge">PROMOÇÃO</div>' : ''}
-                <span class="fav" onclick="toggleFav('${p.nome}')">${fav}</span>
-                <img src="${p.img}" class="img-p" onclick="verImg('${p.img}')">
-            </div>
-            <div class="info">
-                <h3 style="margin:0; font-size:16px;">#${p.id} - ${p.nome}</h3>
-                <div style="margin:10px 0;">${precoHTML}</div>
-                <button class="btn-add" onclick="add(${p.id})">Adicionar</button>
-            </div>
-        </div>`;
-    });
-    document.getElementById("loja").innerHTML = h || "<p style='text-align:center;'>Vazio.</p>";
-    
-    let pagH = "";
-    for(let i=1; i<=totalP; i++) {
-        pagH += `<button class="btn-pag ${i===paginaAtual?'active':''}" onclick="irParaPagina(${i})">${i}</button>`;
-    }
-    document.getElementById("paginacao").innerHTML = pagH;
-}
+    function render() {
+        let lista = db.filter(p => catAtiva === "🔥 Promoções" ? p.promo : p.categoria === catAtiva);
+        let totalPags = Math.ceil(lista.length / pPorPagina);
+        let itens = lista.slice((pagina-1)*pPorPagina, pagina*pPorPagina);
 
-function add(id) {
-    let p = db.find(x => x.id === id);
-    let v = (p.isPromo && p.precoPromo > 0) ? p.precoPromo : p.preco;
-    let ex = cart.find(x => x.id === id);
-    if(ex) ex.q++; else cart.push({id:p.id, nome:p.nome, preco:v, q:1});
-    atualizar();
-}
+        let h = "";
+        itens.forEach(p => {
+            let precoHTML = (p.promo && p.precoPromo > 0) ? 
+                `<div class="preco-box"><span class="preco-antigo">${p.preco.toFixed(2)}€</span><span class="preco-novo">${p.precoPromo.toFixed(2)}€ 🔥</span></div>` :
+                `<div class="preco-box"><span class="preco-normal">${p.preco.toFixed(2)}€</span></div>`;
 
-function atualizar() {
-    localStorage.setItem("cart_artes", JSON.stringify(cart));
-    let t = 0; let h = "";
-    cart.forEach((item, i) => {
-        t += (item.preco * item.q);
-        h += `<div class="item-cart"><span>${item.nome} (x${item.q})</span><button onclick="remover(${i})" style="border:none;background:none;color:red;">Remover</button></div>`;
-    });
-    document.getElementById("itens-carrinho").innerHTML = h || "Carrinho vazio";
-    document.getElementById("total-carrinho").innerText = `Total: ${t.toFixed(2)}€`;
-}
+            h += `<div class="card">
+                ${p.promo ? '<div class="badge">PROMOÇÃO</div>' : ''}
+                <img src="${p.img}" class="img-p">
+                <div class="info">
+                    <h3 style="margin:0; font-size:16px;">#${p.id} - ${p.nome}</h3>
+                    ${precoHTML}
+                    <button class="btn-add" onclick="add(${p.id})">Adicionar</button>
+                </div>
+            </div>`;
+        });
+        document.getElementById("loja").innerHTML = h;
 
-function remover(i) { cart.splice(i,1); atualizar(); }
-function limparCarrinho() { cart = []; atualizar(); }
-function toggleFav(n) { if(favs.includes(n)) favs = favs.filter(f=>f!==n); else favs.push(n); render(); }
-function verImg(s) { document.getElementById("modal").style.display="flex"; document.getElementById("imgGrande").src=s; }
-
-function finalizar() {
-    let n = document.getElementById("cliente").value;
-    if(!n) return alert("Diz-me o teu nome!");
-    let msg = `*Pedido: Cantinho das Artes*\n*Cliente:* ${n}\n\n`;
-    cart.forEach(i => { msg += `- ${i.nome} (x${i.q})\n`; });
-    window.open(`https://wa.me/351932299225?text=${encodeURIComponent(msg)}`);
-}
-</script>
-</body>
-</html>
+        let pagH = "";
+        if(totalPags > 1) {
+            for(let i=1; i<=totalPags; i++) pagH += `<button class="btn-pag ${i===pagina?'active':''}" onclick="ir
