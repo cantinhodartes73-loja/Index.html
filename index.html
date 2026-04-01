@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
@@ -19,30 +19,28 @@ body { font-family:'Poppins', sans-serif; max-width:450px; margin:auto; padding:
 #splash h2 { font-size: 30px; color: var(--verde); font-family: 'Great Vibes', cursive; margin-top:15px; }
 
 h1 { text-align:center; margin-bottom:10px; }
-h1 .logo { max-width:140px; width:100%; border-radius:50%; border: 2px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-h1 .titulo { margin-top:8px; color:var(--verde); font-size:34px; font-family:'Great Vibes', cursive; }
+h1 .logo { max-width:150px; width:100%; border-radius:50%; border: 2px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-family:'Great Vibes', cursive; }
 
-.search { width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; margin-bottom:15px; font-family: inherit; box-sizing: border-box; }
+.search { width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; margin-bottom:15px; font-family: inherit; }
 .tabs { display:flex; gap:8px; overflow-x:auto; margin-bottom:15px; padding-bottom:5px; scrollbar-width: none; }
-.tab { padding:8px 18px; background:#e5e7eb; border-radius:20px; cursor:pointer; white-space: nowrap; font-size: 14px; font-weight: 500; }
+.tab { padding:8px 18px; background:#e5e7eb; border-radius:20px; cursor:pointer; white-space: nowrap; font-size: 14px; font-weight: 500; transition: 0.3s; }
 .tab.active { background:var(--verde); color:white; }
 
-.card { background:white; border-radius:20px; margin-bottom:20px; overflow:hidden; box-shadow:0 8px 12px rgba(0,0,0,0.05); position: relative; }
-.img-p { width:100%; height:280px; object-fit:cover; display: block; cursor: pointer; }
-.badge { position:absolute; left:12px; top:12px; background:var(--vermelho); color:white; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:bold; z-index: 5; }
+.card { background:white; border-radius:20px; margin-bottom:20px; overflow:hidden; box-shadow:0 10px 15px -3px rgba(0,0,0,0.05); position: relative; }
+.img-p { width:100%; height:280px; object-fit:cover; }
+.badge { position:absolute; left:15px; top:15px; background:var(--vermelho); color:white; padding:5px 12px; border-radius:10px; font-size:12px; font-weight:bold; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
 .info { padding:15px; text-align:center; }
-.nome-prod { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
-.preco-container { margin: 10px 0; }
-.preco-antigo { text-decoration: line-through; color: #9ca3af; font-size: 14px; display: block; margin-bottom: 2px; }
-.preco-novo { color: var(--vermelho); font-weight: bold; font-size: 22px; display: block; }
-.preco-normal { color: var(--verde); font-weight: bold; font-size: 22px; display: block; }
+.nome-prod { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #1f2937; }
+.preco-de { text-decoration:line-through; color:#9ca3af; font-size:14px; margin:0; }
+.preco-por { color:var(--vermelho); font-weight:bold; font-size:20px; margin:20px 0; }
+.preco-normal { font-weight:bold; font-size:20px; color:var(--verde); margin:5px 0; }
 
-.btn-add { background:var(--verde); color:white; border:none; padding:14px; width:100%; border-radius:12px; cursor:pointer; font-weight: bold; font-size: 16px; transition: 0.2s; }
-.btn-add:active { transform: scale(0.98); }
+.btn-add { background:var(--verde); color:white; border:none; padding:14px; width:100%; border-radius:12px; cursor:pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
 
 .carrinho { background:white; padding:20px; border-radius:20px; margin-top:30px; border: 2px solid var(--verde); }
-.btn-w { background:#25D366; color:white; padding:15px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-weight: bold; font-size: 16px; }
+.btn-w { background:#25D366; color:white; padding:15px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-weight: bold; }
 
 .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000; }
 .modal img { max-width:95%; max-height:85%; border-radius:10px; }
@@ -68,8 +66,8 @@ h1 .titulo { margin-top:8px; color:var(--verde); font-size:34px; font-family:'Gr
   <h2 style="color:var(--verde); margin-bottom:15px;">🛒 O Teu Pedido</h2>
   <div id="itens-carrinho"></div>
   <p id="total-carrinho" style="font-size: 20px; font-weight:bold; margin: 15px 0;"></p>
-  <input id="cliente" placeholder="O teu nome" style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing:border-box;">
-  <button onclick="finalizar()" class="btn-w">Pedir via WhatsApp 📱</button>
+  <input id="cliente" placeholder="O teu nome">
+  <button onclick="finalizar()" class="btn-w">Finalizar via WhatsApp</button>
 </div>
 
 <div class="modal" id="modal" onclick="this.style.display='none'">
@@ -99,7 +97,6 @@ async function carregar() {
 
     let cats = [...new Set(db.map(p => p.categoria))];
     let temPromo = db.some(p => p.promocao !== "");
-    // Aba "Todos" removida aqui:
     let finalCats = temPromo ? ["🔥 Promoções", ...cats] : cats;
     
     categoriaAtual = finalCats[0];
@@ -109,9 +106,9 @@ async function carregar() {
     ).join("");
 
     renderProdutos();
-    setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 1000);
+    document.getElementById('splash').style.display = 'none';
   } catch (e) {
-    console.error(e);
+    alert("Erro ao carregar os dados. Verifica a internet.");
   }
 }
 
@@ -139,16 +136,14 @@ function renderProdutos() {
         <img src="${p.img}" class="img-p" onclick="abrirImg('${p.img}')">
         <div class="info">
           <div class="nome-prod">#${p.id} - ${p.nome}</div>
-          <div class="preco-container">
-            ${temPromo 
-              ? `<span class="preco-antigo">${p.preco}€</span><span class="preco-novo">${p.promocao}€ 🔥</span>` 
-              : `<span class="preco-normal">${p.preco}€</span>`}
-          </div>
+          ${temPromo 
+            ? `<p class="preco-de">${p.preco}€</p><p class="preco-por">${p.promocao}€ 🔥</p>` 
+            : `<p class="preco-normal">${p.preco}€</p>`}
           <button class="btn-add" onclick="add('${p.id}')">Adicionar ao Carrinho</button>
         </div>
       </div>`;
   });
-  document.getElementById('loja').innerHTML = h || "<p style='text-align:center; padding:20px;'>Nada encontrado.</p>";
+  document.getElementById('loja').innerHTML = h || "<p style='text-align:center; padding:20px;'>Sem produtos aqui.</p>";
 }
 
 function add(id) {
@@ -162,26 +157,22 @@ function atualizarCarrinho() {
   let h = "";
   let total = 0;
   cart.forEach((item, i) => {
-    let pNum = parseFloat(String(item.preco).replace('€','').replace(',','.'));
-    total += pNum;
+    let precoLimp = parseFloat(String(item.preco).replace('€','').replace(',','.'));
+    total += precoLimp;
     h += `<div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:14px;">
             <span>${item.nome}</span>
-            <span><strong>${item.preco}€</strong></span>
+            <span>${item.preco}€</span>
           </div>`;
   });
-  document.getElementById('itens-carrinho').innerHTML = h || "<p style='font-size:13px; color:#999;'>Carrinho vazio...</p>";
+  document.getElementById('itens-carrinho').innerHTML = h;
   document.getElementById('total-carrinho').innerHTML = "Total: " + total.toFixed(2) + "€";
 }
 
 function finalizar() {
   let nome = document.getElementById('cliente').value;
-  if(!nome || cart.length === 0) return alert("Carrinho vazio ou falta o nome!");
-  let total = 0;
-  cart.forEach(i => total += parseFloat(String(i.preco).replace('€','').replace(',','.')));
-  
+  if(!nome || cart.length === 0) return alert("Carrinho vazio ou falta o teu nome!");
   let msg = `*Novo Pedido Cantinho das Artes*\n*Cliente:* ${nome}\n\n`;
   cart.forEach(i => msg += `• ${i.nome} - ${i.preco}€\n`);
-  msg += `\n*Total:* ${total.toFixed(2)}€`;
   window.open(`https://wa.me/351932299225?text=${encodeURIComponent(msg)}`);
 }
 
