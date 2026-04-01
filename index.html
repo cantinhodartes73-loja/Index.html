@@ -112,13 +112,6 @@ window.addEventListener("load", () => {
   setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 2000);
 });
 
-// REGISTO DO SERVICE WORKER
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log("SW erro:", err));
-  });
-}
-
 const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
 
 let db = [];
@@ -140,27 +133,39 @@ function carregarProdutos(data){
     categoria: p.categoria || "Outros"
   }));
 
-  // Lógica Dinâmica de Categorias
   let categoriasDoExcel = [...new Set(db.map(p=>p.categoria))];
-  let temPromo = db.some(p => p.promo); // Verifica se existe algum "sim" na promo
+  let temPromo = db.some(p => p.promo);
   
   let categorias = [];
   if (temPromo) categorias.push("Promoções");
   categorias = categorias.concat(categoriasDoExcel);
 
-  // Se a categoria salva sumiu (ex: promoções acabou), volta para a primeira disponível
-  if(!categorias.includes(categoriaAtual)) categoriaAtual = categorias[0] || "Outros";
+  // Se não houver categoria salva ou a salva não existe mais, define a primeira disponível
+  if(!categoriaAtual || !categorias.includes(categoriaAtual)) {
+      categoriaAtual = categorias[0] || "";
+  }
   
-  document.getElementById('tabs').innerHTML =
-    categorias.map((c)=>`<div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudar('${c}',this)">${c}</div>`).join("");
+  let tabsHTML = categorias.map((c)=>`
+    <div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudar('${c}',this)">
+      ${c}
+    </div>`).join("");
+    
+  document.getElementById('tabs').innerHTML = tabsHTML;
   
   renderProdutos();
   atualizar();
 }
 
-fetch(API).then(r=>r.json()).then(data=>{ carregarProdutos(data); }).catch(e => console.log("Erro API:", e));
+// Chamar a API
+fetch(API)
+  .then(r=>r.json())
+  .then(data=> carregarProdutos(data))
+  .catch(e => {
+    console.error("Erro API:", e);
+    document.getElementById('loja').innerHTML = "<p style='text-align:center;'>Erro ao carregar produtos. Verifica a ligação.</p>";
+  });
 
-function mudar(c,el){ 
+function mudar(c, el){ 
   categoriaAtual = c; 
   paginaAtual = 1; 
   localStorage.setItem("ultimaCat_artes", c); 
@@ -268,4 +273,37 @@ function finalizar(){
   let msg = `*Novo Pedido: Cantinho das Artes*\n\n`;
   msg += `*Nome:* ${n}\n*Tel:* ${t}\n*Envio:* ${envio}\n*Morada:* ${m}\n\n`;
   msg += `*Itens:*\n`;
-  cart.forEach(p=>{ msg += `•
+  cart.forEach(p=>{ msg += `• #${p.id} - ${p.nome} (x${p.qtd}) - ${(p.qtd*p.preco).toFixed(2)}€\n`; });
+  msg += `\n*TOTAL: ${total.toFixed(2)}€*`;
+  
+  window.open(`https://wa.me/351932299225?text=${encodeURIComponent(msg)}`);
+}
+
+function copiar(){ 
+  let n = document.getElementById('cliente').value || "Cliente";
+  let total = cart.reduce((acc,p)=>acc + (p.qtd * p.preco),0);
+  let msg = `Pedido Cantinho das Artes - ${n} - Total: ${total.toFixed(2)}€`;
+  navigator.clipboard.writeText(msg); 
+  alert("Resumo copiado com sucesso!"); 
+}
+
+function mbway(){ alert("Número para MBWay: 932299225\n\nPor favor, envie o comprovativo pelo WhatsApp após o pagamento. 😊"); }
+
+function abrirImg(src){ 
+  document.getElementById('modal').style.display="flex"; 
+  document.getElementById('imgGrande').src=src;
+  history.pushState({ modalAberto: true }, ""); 
+}
+
+function fecharModal(){ 
+  document.getElementById('modal').style.display="none"; 
+  if(history.state && history.state.modalAberto) history.back();
+}
+
+window.addEventListener('popstate', function(event) {
+  document.getElementById('modal').style.display="none";
+});
+</script>
+
+</body>
+</html>
