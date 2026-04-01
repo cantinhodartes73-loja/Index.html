@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
@@ -112,20 +112,19 @@ window.addEventListener("load", () => {
   setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 2000);
 });
 
-// REGISTO DO SERVICE WORKER PARA FUNCIONAR OFFLINE (PWA)
+// REGISTO DO SERVICE WORKER
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(err => console.log("SW erro:", err));
   });
 }
 
-// NOVO LINK DA API (Folha de Excel)
 const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
 
 let db = [];
 let cart = JSON.parse(localStorage.getItem("cart_artes")) || [];
 let favs = JSON.parse(localStorage.getItem("favs_artes")) || [];
-let categoriaAtual = localStorage.getItem("ultimaCat_artes") || ""; 
+let categoriaAtual = localStorage.getItem("ultimaCat_artes") || "Promoções"; 
 let paginaAtual = 1;
 const itensPorPagina = 10;
 
@@ -140,11 +139,16 @@ function carregarProdutos(data){
     promo: p.promo === "sim",
     categoria: p.categoria || "Outros"
   }));
-  let categorias = [...new Set(db.map(p=>p.categoria))];
-  if(!categorias.includes(categoriaAtual)) categoriaAtual = categorias[0] || "Outros";
+
+  // Lógica de Categorias: Adiciona "Promoções" no início
+  let categoriasDoExcel = [...new Set(db.map(p=>p.categoria))];
+  let categorias = ["Promoções", ...categoriasDoExcel];
+  
+  if(!categorias.includes(categoriaAtual)) categoriaAtual = "Promoções";
   
   document.getElementById('tabs').innerHTML =
     categorias.map((c)=>`<div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudar('${c}',this)">${c}</div>`).join("");
+  
   renderProdutos();
   atualizar();
 }
@@ -164,7 +168,17 @@ function irParaPagina(num){ paginaAtual=num; renderProdutos(); window.scrollTo({
 
 function renderProdutos(){
   let termo = document.getElementById('pesquisa').value.toLowerCase();
-  let lista = db.filter(p=> p.categoria==categoriaAtual && p.nome.toLowerCase().includes(termo));
+  
+  // Filtro inteligente para a aba Promoções
+  let lista = db.filter(p => {
+    const nomeMatch = p.nome.toLowerCase().includes(termo);
+    if (categoriaAtual === "Promoções") {
+      return p.promo && nomeMatch;
+    } else {
+      return p.categoria === categoriaAtual && nomeMatch;
+    }
+  });
+
   let totalPaginas = Math.ceil(lista.length / itensPorPagina);
   let inicio = (paginaAtual - 1) * itensPorPagina;
   let itens = lista.slice(inicio, inicio + itensPorPagina);
@@ -189,7 +203,7 @@ function renderProdutos(){
       </div>
     </div>`;
   });
-  document.getElementById('loja').innerHTML = h || "<p style='text-align:center;padding:20px;'>Nenhum item encontrado nesta categoria.</p>";
+  document.getElementById('loja').innerHTML = h || "<p style='text-align:center;padding:20px;'>Nenhum item encontrado aqui.</p>";
   renderPaginacao(totalPaginas);
 }
 
