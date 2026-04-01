@@ -52,7 +52,7 @@ h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:nor
 .carrinho h2 { color: var(--verde); margin-top: 0; }
 .btn-w { background:#25D366; color:white; padding:14px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-size: 16px; font-weight: bold; }
 .item-cart { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
-input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; box-sizing: border-box; }
+input { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; box-sizing: border-box; }
 </style>
 </head>
 <body>
@@ -63,7 +63,7 @@ input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; bo
 </div>
 
 <h1>
-  <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo" alt="Logo Cantinho das Artes">
+  <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo">
   <div class="titulo">🧵 Cantinho das Artes ✂️</div>
 </h1>
 
@@ -82,16 +82,7 @@ input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; bo
   <input id="telefone" placeholder="Telemóvel">
   <input id="morada" placeholder="Morada completa para envio">
   
-  <label style="display:block; margin-top:15px;"><strong>📦 Método de envio:</strong></label>
-  <select id="envio" onchange="atualizar()">
-    <option>Levantamento (Grátis)</option>
-    <option>CTT Normal</option>
-    <option>CTT Registado</option>
-  </select>
-  
   <button onclick="finalizar()" class="btn-w">Pedir via WhatsApp</button>
-  <button onclick="copiar()" class="btn-w" style="background:#111;">Copiar Resumo do Pedido</button>
-  <button onclick="mbway()" class="btn-w" style="background:#555;">Dados MBWay</button>
   <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626;">❌ Limpar Carrinho</button>
 </div>
 
@@ -109,7 +100,7 @@ const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5Co
 let db = [];
 let cart = JSON.parse(localStorage.getItem("cart_artes")) || [];
 let favs = JSON.parse(localStorage.getItem("favs_artes")) || [];
-let categoriaAtual = "🔥 Promoções"; 
+let categoriaAtual = ""; 
 let paginaAtual = 1;
 const itensPorPagina = 10;
 
@@ -117,15 +108,19 @@ function carregarProdutos(data){
   db = data.map(p=>({
     ...p,
     id: p.id,
-    preco: parseFloat(p.preco),
-    precoPromo: p.precoPromo ? parseFloat(p.precoPromo) : null,
-    promo: String(p.promo).toLowerCase() === "sim",
+    preco: String(p.preco || "0"),
+    promocao: String(p.promocao || ""),
     categoria: p.categoria || "Outros"
   }));
 
   let categoriasBase = [...new Set(db.map(p=>p.categoria))];
-  let categoriasFinal = ["🔥 Promoções", "Todos", ...categoriasBase];
   
+  // Criar aba de Promoções se existirem itens com valor na coluna promocao
+  let temPromo = db.some(p => p.promocao.trim() !== "");
+  let categoriasFinal = temPromo ? ["🔥 Promoções", ...categoriasBase] : categoriasBase;
+  
+  categoriaAtual = categoriasFinal[0];
+
   document.getElementById('tabs').innerHTML =
     categoriasFinal.map((c)=>`<div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudar('${c}',this)">${c}</div>`).join("");
   renderProdutos();
@@ -149,8 +144,7 @@ function renderProdutos(){
   
   let lista = db.filter(p => {
     let matchesSearch = p.nome.toLowerCase().includes(termo);
-    if(categoriaAtual === "🔥 Promoções") return p.promo && matchesSearch;
-    if(categoriaAtual === "Todos") return matchesSearch;
+    if(categoriaAtual === "🔥 Promoções") return p.promocao.trim() !== "" && matchesSearch;
     return p.categoria === categoriaAtual && matchesSearch;
   });
 
@@ -160,25 +154,28 @@ function renderProdutos(){
   
   itens.forEach(p=>{
     let fav = favs.includes(p.nome) ? "❤️" : "🤍";
-    let precoHTML = p.promo && p.precoPromo 
-      ? `<p style="text-decoration:line-through;color:#999;font-size:13px;margin:0;">${p.preco.toFixed(2)}€</p>
-         <p style="color:#ef4444;font-weight:bold;font-size:18px;margin:5px 0;">${p.precoPromo.toFixed(2)}€ 🔥</p>`
-      : `<p style="font-weight:bold;font-size:18px;margin:10px 0;">${p.preco.toFixed(2)}€</p>`;
+    let isPromo = p.promocao.trim() !== "";
+    
+    // Mostra preço riscado se a coluna promocao tiver valor
+    let precoHTML = isPromo 
+      ? `<p style="text-decoration:line-through;color:#9ca3af;font-size:14px;margin:0;opacity:0.8;">${p.preco}</p>
+         <p style="color:#ef4444;font-weight:bold;font-size:19px;margin:3px 0;">${p.promocao} 🔥</p>`
+      : `<p style="font-weight:bold;font-size:19px;margin:10px 0;color:#374151;">${p.preco}</p>`;
 
     h+=`<div class="card">
       <div class="card-wrap">
-        ${p.promo ? '<div class="badge">PROMOÇÃO</div>' : ''}
+        ${isPromo ? '<div class="badge">PROMOÇÃO</div>' : ''}
         <span class="fav" onclick="toggleFav('${p.nome}')">${fav}</span>
         <img src="${p.img}" class="img-p" onclick="abrirImg('${p.img}')" loading="lazy">
       </div>
       <div class="info">
-        <h3 style="margin:0 0 10px 0; color:#374151;">#${p.id} - ${p.nome}</h3>
+        <h3 style="margin:0 0 5px 0; color:#374151; font-size:16px;">#${p.id} - ${p.nome}</h3>
         ${precoHTML}
         <button class="btn-add" onclick="add('${p.id}')">Adicionar ao Carrinho</button>
       </div>
     </div>`;
   });
-  document.getElementById('loja').innerHTML = h || "<p style='text-align:center;padding:20px;'>Nenhum item encontrado.</p>";
+  document.getElementById('loja').innerHTML = h || "<p style='text-align:center;padding:20px;'>Nada encontrado.</p>";
   renderPaginacao(totalPaginas);
 }
 
@@ -190,9 +187,9 @@ function renderPaginacao(total){
 
 function add(id){ 
   let produto = db.find(p=>p.id==id); 
-  let precoFinal = (produto.promo && produto.precoPromo) ? produto.precoPromo : produto.preco; 
+  let precoFinal = produto.promocao.trim() !== "" ? produto.promocao : produto.preco; 
   let ex = cart.find(p=>p.id==id); 
-  if(ex) ex.qtd++; else cart.push({...produto, preco:precoFinal, qtd:1}); 
+  if(ex) ex.qtd++; else cart.push({...produto, precoExibido: precoFinal, qtd:1}); 
   localStorage.setItem("cart_artes", JSON.stringify(cart));
   atualizar(); 
 }
@@ -200,11 +197,12 @@ function add(id){
 function atualizar(){
   let total=0; let h="";
   cart.forEach((p,i)=>{ 
-    total += (p.qtd * p.preco); 
+    let pNum = parseFloat(String(p.precoExibido).replace('€','').replace(',','.'));
+    total += (p.qtd * pNum); 
     h+=`<div class="item-cart"><span><strong>#${p.id}</strong> ${p.nome} (x${p.qtd})</span>
         <div><button onclick="menos(${i})">-</button><button onclick="mais(${i})">+</button></div></div>`; 
   });
-  document.getElementById('itens-carrinho').innerHTML = h || "<p>Carrinho vazio.</p>";
+  document.getElementById('itens-carrinho').innerHTML = h || "<p>Vazio.</p>";
   document.getElementById('total-carrinho').innerHTML = `<strong>Total: ${total.toFixed(2)}€</strong>`;
 }
 
@@ -214,8 +212,9 @@ function limparCarrinho(){ cart=[]; localStorage.setItem("cart_artes", JSON.stri
 
 function finalizar(){
   let n = document.getElementById('cliente').value;
-  if(cart.length === 0 || !n) return alert("Verifique o carrinho e o seu nome!");
-  let total = cart.reduce((acc,p)=>acc + (p.qtd * p.preco),0);
+  if(cart.length === 0 || !n) return alert("Verifique os dados!");
+  let total = 0;
+  cart.forEach(p => total += (p.qtd * parseFloat(String(p.precoExibido).replace('€','').replace(',','.'))));
   let msg = `*Novo Pedido Cantinho das Artes*\n*Nome:* ${n}\n\n`;
   cart.forEach(p=>{ msg += `• #${p.id} - ${p.nome} (x${p.qtd})\n`; });
   msg += `\n*TOTAL: ${total.toFixed(2)}€*`;
