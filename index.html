@@ -5,12 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cantinho das Artes</title>
 
-<!-- LIGAÇÃO AO ÍCONE E MANIFEST (PARA APARECER COMO APP) -->
 <link rel="icon" type="image/jpeg" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
 <link rel="apple-touch-icon" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
 <link rel="manifest" href="manifest.json">
 
-<!-- CONFIGURAÇÕES DE CORES DO NAVEGADOR -->
 <meta name="theme-color" content="#10b981">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -66,25 +64,21 @@ input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; bo
 </head>
 <body>
 
-<!-- SPLASH INICIAL -->
 <div id="splash">
   <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" alt="Logo Splash">
   <h2>Cantinho das Artes 👋</h2>
 </div>
 
-<!-- CABEÇALHO -->
 <h1>
   <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo" alt="Logo Cantinho das Artes">
   <div class="titulo">Cantinho das Artes 🎨</div>
 </h1>
 
-<!-- PROCURA E CATEGORIAS -->
 <input class="search" id="pesquisa" placeholder="🔍 Procurar as tuas artes favoritas..." oninput="irParaPagina(1)">
 <div class="tabs" id="tabs"></div>
 <div id="loja"></div>
 <div class="paginacao" id="paginacao"></div>
 
-<!-- SECÇÃO DO CARRINHO -->
 <div class="carrinho">
   <h2>🛒 O Teu Pedido</h2>
   <p>💳 MBWay: <strong>932299225</strong></p>
@@ -108,7 +102,6 @@ input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; bo
   <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626;">❌ Limpar Carrinho</button>
 </div>
 
-<!-- MODAL PARA VER IMAGEM GRANDE -->
 <div class="modal" id="modal" onclick="fecharModal()">
   <img id="imgGrande">
 </div>
@@ -126,8 +119,8 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// LINK DA API (Folha de Excel)
-const API = 'https://script.google.com/macros/s/AKfycbw7iXZ525CvJqAHfBR23OsiarAxrjFU_vaHA75JA7G2hjy9Xany3bvKNdkpNQP7Jch3/exec'; 
+// LINK DA API (Folha de Excel) - ATUALIZADO
+const API = 'https://script.google.com/macros/s/AKfycbxCpFiaNvcxzWiTAR5bZoB72DDsojcvv-LzpgrKRpQTnq9fBQjAHLIiIQRBVhPY2giRUw/exec'; 
 
 let db = [];
 let cart = JSON.parse(localStorage.getItem("cart_artes")) || [];
@@ -288,5 +281,6 @@ window.addEventListener('popstate', function(event) {
   document.getElementById('modal').style.display="none";
 });
 </script>
+
 </body>
 </html>
