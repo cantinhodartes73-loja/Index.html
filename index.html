@@ -7,6 +7,11 @@
 
 <link rel="icon" type="image/jpeg" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
 <link rel="apple-touch-icon" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#10b981">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
@@ -15,66 +20,87 @@
 body { font-family:sans-serif; max-width:450px; margin:auto; padding:15px; background:var(--fundo); }
 
 /* TELA DE CARREGAMENTO */
-#splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
-#splash img { width: 150px; border-radius: 50%; border: 3px solid var(--verde); }
+#splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+#splash img { width: 180px; border-radius: 50%; margin-bottom: 15px; border: 3px solid var(--verde); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+#splash h2 { font-size: 30px; color: var(--verde); font-family: 'Great Vibes', cursive; }
 
-/* CABEÇALHO */
-h1 { text-align:center; margin-bottom:20px; }
-h1 .logo { max-width:140px; border-radius:50%; border: 2px solid var(--verde); }
-h1 .titulo { margin-top:10px; color:var(--verde); font-size:34px; font-family:'Great Vibes', cursive; }
+/* CABEÇALHO E LOGO */
+h1 { text-align:center; margin-bottom:10px; }
+h1 .logo { max-width:160px; width:100%; height:auto; border-radius:50%; display:block; margin:0 auto; border: 2px solid var(--verde); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:normal; font-family:'Great Vibes', cursive; }
 
 /* INTERFACE */
-.search { width:100%; padding:12px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing: border-box; }
-.tabs { display:flex; gap:8px; overflow-x:auto; margin-bottom:15px; padding-bottom:5px; }
-.tab { padding:10px 18px; background:#e5e7eb; border-radius:12px; cursor:pointer; white-space: nowrap; font-size: 14px; }
+.search { width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing: border-box; }
+.tabs { display:flex; gap:5px; overflow:auto; margin-bottom:10px; padding-bottom:5px; }
+.tab { padding:8px 15px; background:#e5e7eb; border-radius:10px; cursor:pointer; white-space: nowrap; font-size: 14px; }
 .tab.active { background:var(--verde); color:white; font-weight: bold; }
 
-/* PRODUTOS */
-.card { background:white; border-radius:18px; margin-bottom:25px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.05); position: relative; }
-.img-p { width:100%; height:280px; object-fit:cover; display: block; cursor: pointer; }
+/* CARTÕES DE PRODUTOS */
+.card { background:white; border-radius:15px; margin-bottom:20px; overflow:hidden; box-shadow:0 4px 6px rgba(0,0,0,0.05); }
+.img-p { width:100%; height:250px; object-fit:cover; cursor:pointer; }
 .info { padding:15px; text-align:center; }
+.btn-add { background:var(--verde); color:white; border:none; padding:12px; width:100%; border-radius:10px; cursor:pointer; font-weight: bold; font-size: 16px; }
 
-/* ESTILO DO PREÇO (O QUE FOI CORRIGIDO) */
-.preco-container { margin: 10px 0; display: flex; flex-direction: column; align-items: center; }
-.preco-antigo { text-decoration: line-through; color: #94a3b8; font-size: 14px; margin-bottom: 2px; }
-.preco-atual { color: #dc2626; font-weight: bold; font-size: 22px; margin: 0; }
-.preco-normal { font-weight: bold; font-size: 22px; color: #1e293b; margin: 10px 0; }
+.card-wrap { position:relative; }
+.badge { position:absolute; left:10px; top:10px; background:#ef4444; color:white; padding:5px 10px; border-radius:8px; font-size:12px; font-weight:bold; }
+.fav { position:absolute; right:10px; top:10px; font-size:24px; cursor:pointer; filter: drop-shadow(0 0 2px rgba(0,0,0,0.3)); }
 
-.btn-add { background:var(--verde); color:white; border:none; padding:14px; width:100%; border-radius:12px; cursor:pointer; font-weight: bold; font-size: 16px; }
-.badge { position:absolute; left:12px; top:12px; background:#ef4444; color:white; padding:5px 12px; border-radius:10px; font-size:12px; font-weight:bold; }
+/* PREÇOS CORRIGIDOS */
+.precos-container { margin: 10px 0; display: flex; flex-direction: column; align-items: center; }
+.preco-rasurado { text-decoration: line-through; color: #94a3b8; font-size: 14px; opacity: 0.8; margin: 0; }
+.preco-novo { color: #ef4444; font-weight: bold; font-size: 20px; margin: 2px 0; }
+.preco-normal { font-weight: bold; font-size: 20px; margin: 10px 0; color: #1f2937; }
+
+/* PAGINAÇÃO */
+.paginacao { display:flex; justify-content:center; gap:8px; margin:20px 0; flex-wrap:wrap; }
+.btn-pag { padding:8px 14px; border:1px solid #ddd; background:white; border-radius:8px; cursor:pointer; }
+.btn-pag.active { background:var(--verde); color:white; border-color: var(--verde); }
+
+/* MODAL */
+.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000; }
+.modal img { max-width:95%; max-height:90%; border-radius:10px; border: 2px solid white; }
 
 /* CARRINHO */
-.carrinho { background:white; padding:20px; border-radius:20px; border: 2px solid var(--verde); margin-top: 30px; }
-input { width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #ddd; box-sizing: border-box; }
-
-/* MODAL IMAGEM */
-.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; justify-content:center; align-items:center; z-index:10000; }
-.modal img { max-width:95%; max-height:90%; border-radius:10px; }
+.carrinho { background:white; padding:20px; border-radius:20px; margin-top:30px; border: 2px solid var(--verde); }
+.btn-w { background:#25D366; color:white; padding:14px; border:none; width:100%; border-radius:12px; margin-top:10px; cursor:pointer; font-size: 16px; font-weight: bold; }
+.item-cart { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+input, select { width:100%; padding:12px; margin-top:8px; border-radius:10px; border:1px solid #ddd; box-sizing: border-box; }
 </style>
 </head>
 <body>
 
 <div id="splash">
   <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
-  <h2 style="font-family:'Great Vibes'; color:var(--verde);">A carregar...</h2>
+  <h2>Cantinho das Artes 👋</h2>
 </div>
 
 <h1>
   <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo">
-  <div class="titulo">Cantinho das Artes</div>
+  <div class="titulo">🧵 Cantinho das Artes ✂️</div>
 </h1>
 
-<input class="search" id="pesquisa" placeholder="🔍 Procurar artes..." oninput="render()">
+<input class="search" id="pesquisa" placeholder="🔍 Procurar as tuas artes favoritas..." oninput="irParaPagina(1)">
 <div class="tabs" id="tabs"></div>
 <div id="loja"></div>
+<div class="paginacao" id="paginacao"></div>
 
 <div class="carrinho">
-  <h2 style="color:var(--verde); margin-top:0;">🛒 O Teu Pedido</h2>
+  <h2>🛒 O Teu Pedido</h2>
   <div id="itens-carrinho"></div>
-  <p id="total-carrinho" style="font-size:18px; font-weight:bold;"></p>
+  <p id="total-carrinho" style="font-size: 18px; margin: 15px 0; font-weight: bold;"></p>
+  
   <input id="cliente" placeholder="O teu nome">
-  <button onclick="finalizar()" style="background:#25D366; color:white; border:none; width:100%; padding:15px; border-radius:12px; font-weight:bold; margin-top:10px; cursor:pointer;">Enviar para WhatsApp</button>
-  <button onclick="limparTudo()" style="background:#f1f5f9; color:#64748b; border:none; width:100%; padding:10px; border-radius:10px; margin-top:10px; cursor:pointer; font-size:12px;">Limpar Carrinho</button>
+  <input id="telefone" placeholder="Telemóvel">
+  <input id="morada" placeholder="Morada completa">
+  
+  <select id="envio" onchange="atualizar()">
+    <option>Levantamento (Grátis)</option>
+    <option>CTT Normal</option>
+    <option>CTT Registado</option>
+  </select>
+  
+  <button onclick="finalizar()" class="btn-w">Pedir via WhatsApp</button>
+  <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626;">❌ Limpar Carrinho</button>
 </div>
 
 <div class="modal" id="modal" onclick="this.style.display='none'">
@@ -82,126 +108,80 @@ input { width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1p
 </div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec';
+window.addEventListener("load", () => {
+  setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 2000);
+});
+
+const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
 
 let db = [];
-let carrinho = JSON.parse(localStorage.getItem("artes_cart")) || [];
-let catAtiva = localStorage.getItem("artes_cat") || "";
+let cart = JSON.parse(localStorage.getItem("cart_artes")) || [];
+let favs = JSON.parse(localStorage.getItem("favs_artes")) || [];
+let categoriaAtual = localStorage.getItem("ultimaCat_artes") || ""; 
+let paginaAtual = 1;
+const itensPorPagina = 10;
 
-// Converte valores do Excel para números usáveis
-function toNum(v) {
-    if (!v) return 0;
+function format(v) {
+    if(!v) return 0;
     return parseFloat(String(v).replace('€','').replace(',','.').trim()) || 0;
 }
 
-fetch(API).then(r => r.json()).then(data => {
+fetch(API).then(r=>r.json()).then(data => {
     db = data.map(p => ({
         ...p,
-        preco: toNum(p.preco),
-        precoPromo: toNum(p.precoPromo),
-        promo: String(p.promo).toLowerCase().trim() === "sim"
+        id: parseInt(p.id),
+        preco: format(p.preco),
+        precoPromo: format(p.precoPromo),
+        isPromo: String(p.promo).toLowerCase().trim() === "sim",
+        categoria: p.categoria || "Outros"
     }));
 
-    let cats = [...new Set(db.map(p => p.categoria))];
-    let temPromo = db.some(p => p.promo);
+    let catsBD = [...new Set(db.map(p => p.categoria))];
+    let temPromo = db.some(p => p.isPromo);
     
     let menu = [];
     if (temPromo) menu.push("🔥 Promoções");
-    menu = menu.concat(cats);
+    menu = menu.concat(catsBD);
 
-    if (!catAtiva || !menu.includes(catAtiva)) catAtiva = menu[0];
+    if(!categoriaAtual || !menu.includes(categoriaAtual)) categoriaAtual = menu[0];
 
     document.getElementById("tabs").innerHTML = menu.map(c => `
-        <div class="tab ${c === catAtiva ? 'active' : ''}" onclick="mudarCat('${c}')">${c}</div>
+        <div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudarCat('${c}')">${c}</div>
     `).join("");
 
-    document.getElementById("splash").style.display = "none";
     render();
-    atualizarCarrinho();
+    atualizar();
 });
 
 function mudarCat(c) {
-    catAtiva = c;
-    localStorage.setItem("artes_cat", c);
-    location.reload(); // Recarrega para limpar filtros e garantir o estado
+    categoriaAtual = c;
+    paginaAtual = 1;
+    localStorage.setItem("ultimaCat_artes", c);
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    render();
 }
+
+function irParaPagina(num){ paginaAtual=num; render(); window.scrollTo({top:0,behavior:'smooth'}); }
 
 function render() {
     let busca = document.getElementById("pesquisa").value.toLowerCase();
     let lista = db.filter(p => {
         let match = p.nome.toLowerCase().includes(busca);
-        if (catAtiva === "🔥 Promoções") return p.promo && match;
-        return p.categoria === catAtiva && match;
+        if (categoriaAtual === "🔥 Promoções") return p.isPromo && match;
+        return p.categoria === categoriaAtual && match;
     });
 
+    let totalPaginas = Math.ceil(lista.length / itensPorPagina);
+    let inicio = (paginaAtual - 1) * itensPorPagina;
+    let itens = lista.slice(inicio, inicio + itensPorPagina);
+    
     let html = "";
-    lista.forEach(p => {
+    itens.forEach(p => {
+        let fav = favs.includes(p.nome) ? "❤️" : "🤍";
         let precoHTML = "";
-        
-        // SE FOR PROMOÇÃO: Mostra preço riscado + preço novo
-        if (p.promo && p.precoPromo > 0) {
+
+        if (p.isPromo && p.precoPromo > 0) {
             precoHTML = `
-                <div class="preco-container">
-                    <span class="preco-antigo">${p.preco.toFixed(2)}€</span>
-                    <span class="preco-atual">${p.precoPromo.toFixed(2)}€ 🔥</span>
-                </div>`;
-        } else {
-            // SE NÃO FOR PROMOÇÃO: Mostra apenas o preço normal
-            precoHTML = `<p class="preco-normal">${p.preco.toFixed(2)}€</p>`;
-        }
-
-        html += `
-            <div class="card">
-                ${p.promo ? '<div class="badge">PROMOÇÃO</div>' : ''}
-                <img src="${p.img}" class="img-p" onclick="verImg('${p.img}')">
-                <div class="info">
-                    <h3 style="margin:0; font-size:16px;">#${p.id} - ${p.nome}</h3>
-                    ${precoHTML}
-                    <button class="btn-add" onclick="add(${p.id})">Adicionar ao Carrinho</button>
-                </div>
-            </div>`;
-    });
-    document.getElementById("loja").innerHTML = html || "<p style='text-align:center;'>Nenhum item encontrado.</p>";
-}
-
-function add(id) {
-    let p = db.find(x => x.id === id);
-    let valorFinal = (p.promo && p.precoPromo > 0) ? p.precoPromo : p.preco;
-    let item = carrinho.find(x => x.id === id);
-    if (item) item.q++; else carrinho.push({ id: p.id, nome: p.nome, preco: valorFinal, q: 1 });
-    atualizarCarrinho();
-}
-
-function atualizarCarrinho() {
-    localStorage.setItem("artes_cart", JSON.stringify(carrinho));
-    let total = 0;
-    let html = "";
-    carrinho.forEach((item, i) => {
-        total += (item.preco * item.q);
-        html += `<div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px;">
-            <span>${item.nome} (x${item.q})</span>
-            <button onclick="remover(${i})" style="border:none; background:none; color:red; cursor:pointer;">Remover</button>
-        </div>`;
-    });
-    document.getElementById("itens-carrinho").innerHTML = html || "Vazio";
-    document.getElementById("total-carrinho").innerText = `Total: ${total.toFixed(2)}€`;
-}
-
-function remover(i) { carrinho.splice(i, 1); atualizarCarrinho(); }
-function limparTudo() { localStorage.clear(); location.reload(); }
-
-function finalizar() {
-    let nome = document.getElementById("cliente").value;
-    if (!nome) return alert("Por favor, indica o teu nome.");
-    let texto = `*Pedido: Cantinho das Artes*\n*Cliente:* ${nome}\n\n`;
-    carrinho.forEach(i => { texto += `- ${i.nome} (x${i.q})\n`; });
-    window.open(`https://wa.me/351932299225?text=${encodeURIComponent(texto)}`);
-}
-
-function verImg(src) {
-    document.getElementById("modal").style.display = "flex";
-    document.getElementById("imgGrande").src = src;
-}
-</script>
-</body>
-</html>
+                <div class="precos-container">
+                    <p class="preco-rasurado">${p.preco.toFixed(2)}€</p>
+                    <p class="preco-novo">${p.precoPromo.toFixed(2)}
