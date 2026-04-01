@@ -119,8 +119,8 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// LINK DA API ATUALIZADO
-const API = 'https://script.google.com/macros/s/AKfycbyOTcOBz8QMMCP3Vo_xROolGc3ItUhuFaMM5OJ7VWU9rvdMw3x2213PbG_VGN2paF60/exec'; 
+// NOVO LINK DA API (Folha de Excel)
+const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
 
 let db = [];
 let cart = JSON.parse(localStorage.getItem("cart_artes")) || [];
@@ -141,7 +141,7 @@ function carregarProdutos(data){
     categoria: p.categoria || "Outros"
   }));
   let categorias = [...new Set(db.map(p=>p.categoria))];
-  if(!categorias.includes(categoriaAtual)) categoriaAtual = categorias[0] || "";
+  if(!categorias.includes(categoriaAtual)) categoriaAtual = categorias[0] || "Outros";
   
   document.getElementById('tabs').innerHTML =
     categorias.map((c)=>`<div class="tab ${c === categoriaAtual ? 'active' : ''}" onclick="mudar('${c}',this)">${c}</div>`).join("");
