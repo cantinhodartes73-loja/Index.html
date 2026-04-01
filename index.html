@@ -32,7 +32,7 @@ h1 .titulo { margin-top:8px; color:var(--verde); font-size:36px; font-weight:nor
 /* INTERFACE */
 .search { width:100%; padding:10px; border-radius:10px; border:1px solid #ddd; margin-bottom:10px; box-sizing: border-box; }
 .tabs { display:flex; gap:5px; overflow:auto; margin-bottom:10px; padding-bottom:5px; }
-.tab { padding:8px 15px; background:#e5e7eb; border-radius:10px; cursor:pointer; white-space: nowrap; font-size: 14px; }
+.tab { padding:8px 15px; background:#e5e7eb; border-radius:10px; cursor:pointer; white-space: nowrap; font-size: 14px; display: flex; align-items: center; gap: 5px; }
 .tab.active { background:var(--verde); color:white; font-weight: bold; }
 
 /* CARTÕES DE PRODUTOS */
@@ -137,10 +137,11 @@ function carregarProdutos(data){
   let temPromo = db.some(p => p.promo);
   
   let categorias = [];
-  if (temPromo) categorias.push("Promoções");
+  // Adiciona a chama 🔥 ao nome da categoria Promoções
+  if (temPromo) categorias.push("🔥 Promoções");
   categorias = categorias.concat(categoriasDoExcel);
 
-  // Se não houver categoria salva ou a salva não existe mais, define a primeira disponível
+  // Ajuste para lidar com o emoji no nome ao verificar a categoria salva
   if(!categoriaAtual || !categorias.includes(categoriaAtual)) {
       categoriaAtual = categorias[0] || "";
   }
@@ -162,7 +163,7 @@ fetch(API)
   .then(data=> carregarProdutos(data))
   .catch(e => {
     console.error("Erro API:", e);
-    document.getElementById('loja').innerHTML = "<p style='text-align:center;'>Erro ao carregar produtos. Verifica a ligação.</p>";
+    document.getElementById('loja').innerHTML = "<p style='text-align:center; padding:20px;'>Erro ao carregar produtos.<br>Por favor, tenta limpar o carrinho no fundo da página e recarregar.</p>";
   });
 
 function mudar(c, el){ 
@@ -181,7 +182,8 @@ function renderProdutos(){
   
   let lista = db.filter(p => {
     const nomeMatch = p.nome.toLowerCase().includes(termo);
-    if (categoriaAtual === "Promoções") {
+    // Verifica se a categoria atual é a de promoções (com emoji)
+    if (categoriaAtual === "🔥 Promoções") {
       return p.promo && nomeMatch;
     } else {
       return p.categoria === categoriaAtual && nomeMatch;
@@ -195,9 +197,23 @@ function renderProdutos(){
   
   itens.forEach(p=>{
     let fav = favs.includes(p.nome) ? "❤️" : "🤍";
-    let precoHTML = p.promo && p.precoPromo 
-      ? `<p style="text-decoration:line-through;color:#999;font-size:13px;margin:0;">${p.preco.toFixed(2)}€</p><p style="color:#ef4444;font-weight:bold;font-size:18px;margin:5px 0;">${p.precoPromo.toFixed(2)}€ 🔥</p>`
-      : `<p style="font-weight:bold;font-size:18px;margin:10px 0;">${p.preco.toFixed(2)}€</p>`;
+    
+    // REPOSTO O VISUAL ORIGINAL DOS PREÇOS
+    let precoHTML = "";
+    if (p.promo && p.precoPromo) {
+        precoHTML = `
+            <p style="text-decoration:line-through; color:#999; font-size:13px; margin:0; opacity:0.7;">
+                ${p.preco.toFixed(2)}€
+            </p>
+            <p style="color:#ef4444; font-weight:bold; font-size:18px; margin:5px 0;">
+                ${p.precoPromo.toFixed(2)}€ 🔥
+            </p>`;
+    } else {
+        precoHTML = `
+            <p style="font-weight:bold; font-size:18px; margin:10px 0;">
+                ${p.preco.toFixed(2)}€
+            </p>`;
+    }
 
     h+=`<div class="card">
       <div class="card-wrap">
@@ -206,7 +222,7 @@ function renderProdutos(){
         <img src="${p.img}" class="img-p" onclick="abrirImg('${p.img}')" loading="lazy">
       </div>
       <div class="info">
-        <h3 style="margin:0 0 10px 0; color:#374151;">#${p.id} - ${p.nome}</h3>
+        <h3 style="margin:0 0 10px 0; color:#374151; font-size:16px;">#${p.id} - ${p.nome}</h3>
         ${precoHTML}
         <button class="btn-add" onclick="add(${p.id})">Adicionar ao Carrinho</button>
       </div>
@@ -242,7 +258,7 @@ function add(id){
 
 function mais(i){ cart[i].qtd++; guardar(); atualizar(); }
 function menos(i){ cart[i].qtd--; if(cart[i].qtd<=0) cart.splice(i,1); guardar(); atualizar(); }
-function limparCarrinho(){ if(confirm("Deseja mesmo anular o seu carrinho?")){ cart=[]; guardar(); atualizar(); } }
+function limparCarrinho(){ if(confirm("Deseja mesmo anular o seu carrinho?")){ cart=[]; guardar(); atualizar(); localStorage.removeItem("ultimaCat_artes"); location.reload(); } }
 
 function atualizar(){
   let total=0; let h="";
