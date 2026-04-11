@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
-        :root { --verde: #10b981; --fundo: #f0fdf4; }
+        :root { --verde: #10b981; --fundo: #f0fdf4; --promo: #ef4444; }
         body { font-family: sans-serif; max-width: 450px; margin: auto; padding: 15px; background: var(--fundo); color: #374151; }
         
         #pwa-install-banner {
@@ -40,11 +40,16 @@
         
         .search { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box; }
         .tabs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
-        .tab { padding: 10px 18px; background: #e5e7eb; border-radius: 12px; cursor: pointer; white-space: nowrap; font-size: 14px; }
-        .tab.active { background: var(--verde); color: white; font-weight: bold; }
+        .tab { padding: 10px 18px; background: #e5e7eb; border-radius: 12px; cursor: pointer; white-space: nowrap; font-size: 14px; font-weight: bold; }
+        
+        /* CORES DAS ABAS */
+        .tab.active { background: var(--verde); color: white; }
+        .tab.promo-tab.active { background: var(--promo) !important; color: white !important; animation: blink 1.5s infinite; }
+
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.85; } 100% { opacity: 1; } }
 
         .card { background: white; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; }
-        .badge { position: absolute; left: 8px; top: 8px; background: #ef4444; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; z-index: 5; }
+        .badge { position: absolute; left: 8px; top: 8px; background: var(--promo); color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; z-index: 5; }
         .img-p { width: 100%; height: 280px; object-fit: cover; cursor: pointer; display: block; }
         .info { padding: 15px; text-align: center; }
         .btn-add { background: var(--verde); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
@@ -154,7 +159,11 @@
 
     function renderCategorias(){
         let cats = ["Promoções", ...new Set(db.map(p=>p.categoria))];
-        document.getElementById('tabs').innerHTML = cats.map(c=>`<div class="tab ${c===categoriaAtual?'active':''}" onclick="categoriaAtual='${c}';paginaAtual=1;renderCategorias();renderProdutos();">${c}</div>`).join("");
+        document.getElementById('tabs').innerHTML = cats.map(c=>{
+            let label = c === "Promoções" ? "Promoções 🔥" : c;
+            let classePromo = c === "Promoções" ? "promo-tab" : "";
+            return `<div class="tab ${classePromo} ${c===categoriaAtual?'active':''}" onclick="categoriaAtual='${c}';paginaAtual=1;renderCategorias();renderProdutos();">${label}</div>`;
+        }).join("");
     }
 
     function renderProdutos(){
@@ -168,7 +177,7 @@
                 ? `<p style="text-decoration:line-through;color:#999;font-size:12px;margin:0;">${p.preco.toFixed(2)}€</p><p style="color:#ef4444;font-weight:bold;font-size:19px;margin:5px 0;">${p.precoPromo.toFixed(2)}€ 🔥</p>`
                 : `<p style="font-weight:bold;font-size:19px;margin:10px 0;">${p.preco.toFixed(2)}€</p>`;
             return `<div class="card">
-                ${p.promo ? '<div class="badge">PROMOÇÃO</div>' : ''}
+                ${p.promo ? `<div class="badge">PROMOÇÃO</div>` : ''}
                 <img src="${p.img}" class="img-p" onclick="document.getElementById('modal').style.display='flex';document.getElementById('imgGrande').src='${p.img}'">
                 <div class="info"><h3>#${p.id} - ${p.nome}</h3>${precoHTML}<button class="btn-add" onclick="add(${p.id})">Adicionar</button></div>
             </div>`;
