@@ -36,7 +36,7 @@
 
         h1 { text-align: center; margin-bottom: 20px; }
         h1 .logo { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid var(--verde); }
-        h1 .titulo { margin-top: 10px; color: var(--verde); font-size: 36px; font-family: 'Great Vibes', cursive; }
+        h1 .titulo { margin-top: 10px; color: var(--verde); font-size: 34px; font-family: 'Great Vibes', cursive; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
         .search { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box; }
         .tabs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
@@ -88,7 +88,7 @@
 
 <h1>
     <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="logo">
-    <div class="titulo">Cantinho das Artes</div>
+    <div class="titulo">🧵 Cantinho das Artes ✂️</div>
 </h1>
 
 <input class="search" id="pesquisa" placeholder="🔍 O que procuras?" oninput="irParaPagina(1)">
@@ -149,7 +149,6 @@
     const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
     let db = [], cart = JSON.parse(localStorage.getItem("cart_artes")) || [], categoriaAtual = "", paginaAtual = 1;
 
-    // Função para baralhar arrays
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -160,14 +159,9 @@
 
     fetch(API).then(r=>r.json()).then(data=>{
         db = data.map(p=>({...p, id:parseInt(p.id), preco:parseFloat(p.preco), precoPromo: p.precoPromo ? parseFloat(p.precoPromo) : null, promo: p.promo === "sim"}));
-        
-        // Baralhar o banco de dados inicial
         db = shuffle(db);
-
-        // Escolher uma categoria aleatória para começar (ou promoções)
         let catsDisponiveis = ["Promoções", ...new Set(db.map(p=>p.categoria))];
         categoriaAtual = catsDisponiveis[Math.floor(Math.random() * catsDisponiveis.length)];
-
         renderCategorias(); renderProdutos(); atualizar();
     });
 
@@ -183,7 +177,6 @@
     function mudarCategoria(c) {
         categoriaAtual = c;
         paginaAtual = 1;
-        // Baralhar a base de dados sempre que muda de aba para os itens aparecerem em ordem diferente
         db = shuffle(db);
         renderCategorias();
         renderProdutos();
@@ -192,7 +185,6 @@
     function renderProdutos(){
         let termo = document.getElementById('pesquisa').value.toLowerCase();
         let lista = db.filter(p => (categoriaAtual === "Promoções" ? p.promo : p.categoria === categoriaAtual) && p.nome.toLowerCase().includes(termo));
-        
         let porPag = 10; let totalPags = Math.ceil(lista.length / porPag);
         let inicio = (paginaAtual - 1) * porPag;
         
@@ -243,5 +235,4 @@
     }
 </script>
 </body>
-    </html>
-    
+</html>
