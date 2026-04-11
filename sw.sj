@@ -1,4 +1,4 @@
-const CACHE_NAME = 'miminhos-cache-v2'; // Mudei para v2 para o telemóvel atualizar
+const CACHE_NAME = 'cantinho-artes-cache-v1';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,7 +6,6 @@ const urlsToCache = [
   'https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap'
 ];
 
-// Instalação e Cache Inicial
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
@@ -16,7 +15,6 @@ self.addEventListener('install', event => {
   self.skipWaiting();
 });
 
-// Limpeza de Caches Antigos
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
@@ -27,11 +25,9 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Estratégia: Cache First para Imagens, Network First para API
 self.addEventListener('fetch', event => {
   const url = event.request.url;
 
-  // Se for uma IMAGEM, tenta carregar do Cache primeiro (Cache First)
   if (event.request.destination === 'image' || url.includes('.jpg') || url.includes('.png')) {
     event.respondWith(
       caches.match(event.request).then(response => {
@@ -44,7 +40,6 @@ self.addEventListener('fetch', event => {
       })
     );
   } 
-  // Se for a API do Google Sheets, tenta Internet primeiro, mas guarda cópia se falhar (Network First)
   else if (url.includes('script.google.com')) {
     event.respondWith(
       fetch(event.request).then(fetchRes => {
@@ -55,7 +50,6 @@ self.addEventListener('fetch', event => {
       }).catch(() => caches.match(event.request))
     );
   }
-  // Para o resto (HTML, CSS), usa o padrão
   else {
     event.respondWith(
       caches.match(event.request).then(response => response || fetch(event.request))
