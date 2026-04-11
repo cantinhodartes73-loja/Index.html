@@ -42,11 +42,8 @@
         .tabs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; scrollbar-width: none; }
         .tab { padding: 10px 18px; background: #e5e7eb; border-radius: 12px; cursor: pointer; white-space: nowrap; font-size: 14px; font-weight: bold; }
         
-        /* CORES DAS ABAS */
         .tab.active { background: var(--verde); color: white; }
-        .tab.promo-tab.active { background: var(--promo) !important; color: white !important; animation: blink 1.5s infinite; }
-
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.85; } 100% { opacity: 1; } }
+        .tab.promo-tab.active { background: var(--promo) !important; color: white !important; }
 
         .card { background: white; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; }
         .badge { position: absolute; left: 8px; top: 8px; background: var(--promo); color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; z-index: 5; }
@@ -150,10 +147,27 @@
     window.onload = () => setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 2500);
 
     const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec'; 
-    let db = [], cart = JSON.parse(localStorage.getItem("cart_artes")) || [], categoriaAtual = "Promoções", paginaAtual = 1;
+    let db = [], cart = JSON.parse(localStorage.getItem("cart_artes")) || [], categoriaAtual = "", paginaAtual = 1;
+
+    // Função para baralhar arrays
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 
     fetch(API).then(r=>r.json()).then(data=>{
         db = data.map(p=>({...p, id:parseInt(p.id), preco:parseFloat(p.preco), precoPromo: p.precoPromo ? parseFloat(p.precoPromo) : null, promo: p.promo === "sim"}));
+        
+        // Baralhar o banco de dados inicial
+        db = shuffle(db);
+
+        // Escolher uma categoria aleatória para começar (ou promoções)
+        let catsDisponiveis = ["Promoções", ...new Set(db.map(p=>p.categoria))];
+        categoriaAtual = catsDisponiveis[Math.floor(Math.random() * catsDisponiveis.length)];
+
         renderCategorias(); renderProdutos(); atualizar();
     });
 
@@ -162,13 +176,23 @@
         document.getElementById('tabs').innerHTML = cats.map(c=>{
             let label = c === "Promoções" ? "Promoções 🔥" : c;
             let classePromo = c === "Promoções" ? "promo-tab" : "";
-            return `<div class="tab ${classePromo} ${c===categoriaAtual?'active':''}" onclick="categoriaAtual='${c}';paginaAtual=1;renderCategorias();renderProdutos();">${label}</div>`;
+            return `<div class="tab ${classePromo} ${c===categoriaAtual?'active':''}" onclick="mudarCategoria('${c}')">${label}</div>`;
         }).join("");
+    }
+
+    function mudarCategoria(c) {
+        categoriaAtual = c;
+        paginaAtual = 1;
+        // Baralhar a base de dados sempre que muda de aba para os itens aparecerem em ordem diferente
+        db = shuffle(db);
+        renderCategorias();
+        renderProdutos();
     }
 
     function renderProdutos(){
         let termo = document.getElementById('pesquisa').value.toLowerCase();
         let lista = db.filter(p => (categoriaAtual === "Promoções" ? p.promo : p.categoria === categoriaAtual) && p.nome.toLowerCase().includes(termo));
+        
         let porPag = 10; let totalPags = Math.ceil(lista.length / porPag);
         let inicio = (paginaAtual - 1) * porPag;
         
@@ -219,4 +243,5 @@
     }
 </script>
 </body>
-</html>
+    </html>
+    
