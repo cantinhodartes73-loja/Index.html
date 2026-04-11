@@ -10,9 +10,6 @@
     <link rel="apple-touch-icon" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
     
     <meta name="theme-color" content="#10b981">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
@@ -26,49 +23,45 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             display: none; z-index: 10001;
             border: 2px solid var(--verde);
-            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes slideUp { from { transform: translateY(120%); } to { transform: translateY(0); } }
         .pwa-content { display: flex; align-items: center; gap: 15px; }
-        .pwa-icon { width: 55px; height: 55px; border-radius: 12px; }
+        .pwa-icon { width: 50px; height: 50px; border-radius: 10px; }
         .pwa-buttons { display: flex; gap: 10px; margin-top: 15px; }
         .btn-pwa-install { background: var(--verde); color: white; border: none; padding: 10px; border-radius: 10px; font-weight: bold; flex: 2; cursor: pointer; }
         .btn-pwa-close { background: #f3f4f6; color: #4b5563; border: none; padding: 10px; border-radius: 10px; flex: 1; cursor: pointer; }
 
         /* SPLASH SCREEN */
         #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0fdf4; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: 0.8s; }
-        #splash img { width: 200px; height: 200px; border-radius: 50%; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        #splash img { width: 180px; height: 180px; border-radius: 50%; border: 5px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         #splash h2 { font-size: 32px; color: var(--verde); font-family: 'Great Vibes', cursive; margin-top: 20px; }
 
-        /* LOJA */
-        h1 { text-align: center; margin-bottom: 20px; }
-        h1 .logo { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid var(--verde); }
-        h1 .titulo { margin-top: 12px; color: var(--verde); font-size: 38px; font-family: 'Great Vibes', cursive; }
+        /* DESIGN GERAL */
+        h1 { text-align: center; }
+        h1 .logo { width: 130px; height: 130px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid var(--verde); }
+        h1 .titulo { margin-top: 10px; color: var(--verde); font-size: 35px; font-family: 'Great Vibes', cursive; }
         
-        .search { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box; outline: none; }
-        .tabs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 8px; scrollbar-width: none; }
-        .tabs::-webkit-scrollbar { display: none; }
+        .search { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box; }
+        .tabs { display: flex; gap: 8px; overflow-x: auto; margin-bottom: 15px; padding-bottom: 5px; }
         .tab { padding: 10px 18px; background: #e5e7eb; border-radius: 12px; cursor: pointer; white-space: nowrap; }
         .tab.active { background: var(--verde); color: white; font-weight: bold; }
 
-        /* CARDS */
+        /* CARDS PRODUTOS */
         .card { background: white; border-radius: 15px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); position: relative; }
-        .badge { position: absolute; left: 10px; top: 10px; background: #ef4444; color: white; padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; z-index: 5; }
-        .img-p { width: 100%; height: 280px; object-fit: cover; cursor: pointer; display: block; }
+        .badge { position: absolute; left: 10px; top: 10px; background: #ef4444; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; z-index: 5; }
+        .img-p { width: 100%; height: 250px; object-fit: cover; display: block; }
         .info { padding: 15px; text-align: center; }
-        .btn-add { background: var(--verde); color: white; border: none; padding: 14px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .btn-add { background: var(--verde); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
         /* CARRINHO */
-        .carrinho { background: white; padding: 20px; border-radius: 20px; margin-top: 30px; border: 2px solid var(--verde); }
-        .item-cart { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .carrinho { background: white; padding: 20px; border-radius: 20px; margin-top: 20px; border: 2px solid var(--verde); }
+        .item-cart { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .cart-controls { display: flex; align-items: center; gap: 10px; }
-        .cart-controls button { background: #e5e7eb; border: none; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-        .btn-w { background: #25D366; color: white; padding: 15px; border: none; width: 100%; border-radius: 12px; margin-top: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .cart-controls button { width: 25px; height: 25px; border-radius: 5px; border: 1px solid #ddd; cursor: pointer; }
+        .btn-w { background: #25D366; color: white; padding: 15px; border: none; width: 100%; border-radius: 12px; margin-top: 10px; cursor: pointer; font-weight: bold; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 10000; }
-        .modal img { max-width: 95%; max-height: 90%; border-radius: 10px; }
-        input, select { width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+        .modal img { max-width: 90%; max-height: 80%; border-radius: 10px; }
+        input, select { width: 100%; padding: 10px; margin-top: 10px; border-radius: 8px; border: 1px solid #ddd; }
     </style>
 </head>
 <body>
@@ -76,10 +69,7 @@
 <div id="pwa-install-banner">
     <div class="pwa-content">
         <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="pwa-icon">
-        <div class="pwa-text">
-            <h4>Instalar Aplicação</h4>
-            <p>Acede à loja no teu ecrã inicial!</p>
-        </div>
+        <div class="pwa-text"><h4>Instalar App</h4><p>Adicionar ao ecrã inicial.</p></div>
     </div>
     <div class="pwa-buttons">
         <button class="btn-pwa-close" onclick="fecharBannerPWA()">Depois</button>
@@ -104,28 +94,106 @@
 <div class="carrinho">
     <h2>🛒 O Teu Pedido</h2>
     <div id="itens-carrinho"></div>
-    <p id="total-carrinho" style="font-size: 18px; margin: 15px 0;"></p>
-    
+    <p id="total-carrinho"></p>
     <input id="cliente" placeholder="Teu nome">
-    <input id="telefone" placeholder="Telemóvel">
-    <input id="morada" placeholder="Morada">
-    
     <select id="envio" onchange="atualizar()">
         <option>Levantamento (Grátis)</option>
-        <option>CTT Normal</option>
-        <option>CTT Registado</option>
+        <option>Envio CTT</option>
     </select>
-    
-    <button onclick="finalizar()" class="btn-w">Pedir via WhatsApp</button>
-    <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626;">Limpar Carrinho</button>
+    <button onclick="finalizar()" class="btn-w">Enviar Pedido WhatsApp</button>
 </div>
 
-<div class="modal" id="modal" onclick="fecharModal()">
-    <img id="imgGrande">
-</div>
+<div class="modal" id="modal" onclick="this.style.display='none'"><img id="imgGrande"></div>
 
 <script>
-    /* PWA LOGIC */
+    /* PWA */
     let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e
-    
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault(); deferredPrompt = e;
+        let count = parseInt(localStorage.getItem('pwa_views') || '0');
+        if (count < 3) setTimeout(() => document.getElementById('pwa-install-banner').style.display = 'block', 3000);
+    });
+    document.getElementById('btnInstall').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') document.getElementById('pwa-install-banner').style.display = 'none';
+            deferredPrompt = null;
+        }
+    });
+    function fecharBannerPWA() {
+        document.getElementById('pwa-install-banner').style.display = 'none';
+        localStorage.setItem('pwa_views', parseInt(localStorage.getItem('pwa_views') || '0') + 1);
+    }
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js'); }
+
+    /* LOJA */
+    window.onload = () => setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 2000);
+
+    const API = 'https://script.google.com/macros/s/AKfycbxGsDtiXsYF5J5jVUHX4X64f5CoqEbY-2w1UU4NcuS2MTYZBnlVWaAb5KEbJt7aIijF/exec';
+    let db = [], cart = JSON.parse(localStorage.getItem("cart_artes")) || [], categoriaAtual = "Promoções";
+
+    fetch(API).then(r=>r.json()).then(data=>{
+        db = data.map(p=>({
+            ...p, id:parseInt(p.id), 
+            preco:parseFloat(p.preco), 
+            precoPromo: p.precoPromo ? parseFloat(p.precoPromo) : null,
+            promo: p.promo === "sim"
+        }));
+        renderCategorias(); renderProdutos(); atualizar();
+    }).catch(e => console.error("Erro na API", e));
+
+    function renderCategorias(){
+        let cats = ["Promoções", ...new Set(db.map(p=>p.categoria))];
+        document.getElementById('tabs').innerHTML = cats.map(c=>`<div class="tab ${c===categoriaAtual?'active':''}" onclick="categoriaAtual='${c}'; renderCategorias(); renderProdutos();">${c}</div>`).join("");
+    }
+
+    function renderProdutos(){
+        let termo = document.getElementById('pesquisa').value.toLowerCase();
+        let lista = db.filter(p => (categoriaAtual === "Promoções" ? p.promo : p.categoria === categoriaAtual) && p.nome.toLowerCase().includes(termo));
+        document.getElementById('loja').innerHTML = lista.map(p=>{
+            let precoHTML = p.promo && p.precoPromo 
+                ? `<span style="text-decoration:line-through;color:grey;font-size:12px;">${p.preco.toFixed(2)}€</span> <span style="color:red;font-weight:bold;">${p.precoPromo.toFixed(2)}€</span>`
+                : `<span>${p.preco.toFixed(2)}€</span>`;
+            return `<div class="card">
+                ${p.promo ? '<div class="badge">PROMO</div>' : ''}
+                <img src="${p.img}" class="img-p" onclick="document.getElementById('modal').style.display='flex';document.getElementById('imgGrande').src='${p.img}'">
+                <div class="info">
+                    <h3>${p.nome}</h3>
+                    <p>${precoHTML}</p>
+                    <button class="btn-add" onclick="add(${p.id})">Adicionar</button>
+                </div>
+            </div>`;
+        }).join("");
+    }
+
+    function add(id){
+        let p = db.find(x=>x.id===id);
+        let valor = (p.promo && p.precoPromo) ? p.precoPromo : p.preco;
+        let ex = cart.find(x=>x.id===id);
+        if(ex) ex.qtd++; else cart.push({...p, precoFinal: valor, qtd:1});
+        atualizar();
+    }
+
+    function atualizar(){
+        localStorage.setItem("cart_artes", JSON.stringify(cart));
+        let total = cart.reduce((acc,p)=>acc+(p.precoFinal*p.qtd),0);
+        document.getElementById('itens-carrinho').innerHTML = cart.map((p,i)=>`
+            <div class="item-cart">
+                <span>${p.nome}</span>
+                <div class="cart-controls">
+                    <button onclick="cart[${i}].qtd--; if(cart[${i}].qtd<1) cart.splice(${i},1); atualizar();">-</button>
+                    <span>${p.qtd}</span>
+                    <button onclick="cart[${i}].qtd++; atualizar();">+</button>
+                </div>
+            </div>`).join("");
+        document.getElementById('total-carrinho').innerHTML = "Total: " + total.toFixed(2) + "€";
+    }
+
+    function finalizar(){
+        let msg = "Pedido Cantinho das Artes:\n" + cart.map(p=>`- ${p.nome} (x${p.qtd})`).join("\n");
+        window.open(`https://wa.me/351932299225?text=${encodeURIComponent(msg)}`);
+    }
+</script>
+</body>
+</html>
