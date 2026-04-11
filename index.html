@@ -9,9 +9,7 @@
     <link rel="icon" type="image/png" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
     <link rel="apple-touch-icon" href="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg">
     <meta name="theme-color" content="#10b981">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
+    
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
@@ -48,19 +46,23 @@
         .tab { padding: 10px 18px; background: #e5e7eb; border-radius: 12px; cursor: pointer; white-space: nowrap; font-size: 14px; }
         .tab.active { background: var(--verde); color: white; font-weight: bold; }
 
-        /* CARDS - REMOVIDO BORDAS PRETAS */
-        .card { background: white; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; border: none; }
+        /* CARDS */
+        .card { background: white; border-radius: 12px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative; }
         .badge { position: absolute; left: 8px; top: 8px; background: #ef4444; color: white; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; z-index: 5; }
-        .img-p { width: 100%; height: 280px; object-fit: cover; cursor: pointer; display: block; border: none; }
+        .img-p { width: 100%; height: 280px; object-fit: cover; cursor: pointer; display: block; }
         .info { padding: 15px; text-align: center; }
         .btn-add { background: var(--verde); color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: bold; }
 
-        /* CARRINHO COMPLETO */
+        /* CARRINHO */
         .carrinho { background: white; padding: 20px; border-radius: 15px; margin-top: 25px; border: 2px solid var(--verde); }
         .item-cart { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #eee; }
         .cart-controls { display: flex; align-items: center; gap: 8px; }
         .cart-controls button { background: #eee; border: none; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         
+        /* PAGAMENTO MBWAY */
+        .mbway-box { background: #fdf2f8; border: 1px dashed #db2777; padding: 12px; border-radius: 10px; margin: 15px 0; text-align: center; }
+        .mbway-box b { color: #db2777; }
+
         .btn-w { background: #25D366; color: white; padding: 15px; border: none; width: 100%; border-radius: 10px; margin-top: 10px; cursor: pointer; font-weight: bold; font-size: 16px; }
         
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center; z-index: 10000; }
@@ -75,10 +77,7 @@
 <div id="pwa-install-banner">
     <div class="pwa-content">
         <img src="https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAESeEppzD4RD_b9k3pEsp6FYdkAAd7-9PAAAm4eAAKLSGFWbefvIyuchDw6BA.jpg" class="pwa-icon">
-        <div class="pwa-text">
-            <h4>Instalar App</h4>
-            <p>Adiciona o Cantinho das Artes ao teu ecrã!</p>
-        </div>
+        <div class="pwa-text"><h4>Instalar App</h4><p>Cantinho das Artes no teu ecrã!</p></div>
     </div>
     <div class="pwa-buttons">
         <button class="btn-pwa-close" onclick="fecharBannerPWA()">Depois</button>
@@ -115,6 +114,12 @@
         <option>CTT Normal (+2.00€)</option>
         <option>CTT Registado (+4.50€)</option>
     </select>
+
+    <div class="mbway-box">
+        Paga por <b>MB WAY</b> para o número:<br>
+        <span style="font-size: 18px; font-weight: bold;">932 299 225</span><br>
+        <small>(Envia o comprovativo após finalizar o pedido)</small>
+    </div>
     
     <button onclick="finalizar()" class="btn-w">Finalizar Pedido via WhatsApp</button>
     <button onclick="limparCarrinho()" class="btn-w" style="background:#dc2626; font-size: 11px; padding: 6px;">Limpar Carrinho</button>
@@ -211,7 +216,7 @@
         if(!nome || !tel) return alert("Preenche Nome e Telemóvel!");
         let sub = cart.reduce((acc,p)=>acc+(p.precoFinal*p.qtd),0);
         let taxa = envio.includes("Normal") ? 2.0 : envio.includes("Registado") ? 4.5 : 0;
-        let msg = `*PEDIDO CANTINHO DAS ARTES*\n\n*Cliente:* ${nome}\n*Tel:* ${tel}\n*Morada:* ${document.getElementById('morada').value}\n*Envio:* ${envio}\n\n*ITENS:*\n` + cart.map(p=>`- #${p.id} ${p.nome} (x${p.qtd})`).join("\n") + `\n\n*TOTAL:* ${(sub+taxa).toFixed(2)}€`;
+        let msg = `*PEDIDO CANTINHO DAS ARTES*\n\n*Cliente:* ${nome}\n*Tel:* ${tel}\n*Morada:* ${document.getElementById('morada').value}\n*Envio:* ${envio}\n\n*ITENS:*\n` + cart.map(p=>`- #${p.id} ${p.nome} (x${p.qtd})`).join("\n") + `\n\n*TOTAL A PAGAR:* ${(sub+taxa).toFixed(2)}€\n*Pagamento:* MB WAY 932299225`;
         window.open(`https://wa.me/351932299225?text=${encodeURIComponent(msg)}`);
     }
 </script>
