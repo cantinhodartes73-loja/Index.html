@@ -35,7 +35,8 @@
         #splash h2 { font-size: 30px; color: var(--verde); font-family: 'Great Vibes', cursive; margin-top: 15px; }
 
         h1 { text-align: center; margin-bottom: 20px; }
-        h1 .logo { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 3px solid var(--verde); }
+        /* BORDA DA LOGO MAIS FINA */
+        h1 .logo { width: 140px; height: 140px; object-fit: cover; border-radius: 50%; display: block; margin: 0 auto; border: 1.5px solid #333; }
         h1 .titulo { margin-top: 10px; color: var(--verde); font-size: 34px; font-family: 'Great Vibes', cursive; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
         .search { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd; margin-bottom: 15px; box-sizing: border-box; }
@@ -91,7 +92,7 @@
     <div class="titulo">🧵 Cantinho das Artes ✂️</div>
 </h1>
 
-<input class="search" id="pesquisa" placeholder="🔍 O que procuras?" oninput="irParaPagina(1)">
+<input class="search" id="pesquisa" placeholder="🔍 Pesquisa em toda a loja..." oninput="paginaAtual=1; renderProdutos()">
 <div class="tabs" id="tabs"></div>
 <div id="loja"></div>
 <div class="paginacao" id="paginacao"></div>
@@ -177,6 +178,7 @@
     function mudarCategoria(c) {
         categoriaAtual = c;
         paginaAtual = 1;
+        document.getElementById('pesquisa').value = ""; // Limpa pesquisa ao mudar de aba
         db = shuffle(db);
         renderCategorias();
         renderProdutos();
@@ -184,7 +186,16 @@
 
     function renderProdutos(){
         let termo = document.getElementById('pesquisa').value.toLowerCase();
-        let lista = db.filter(p => (categoriaAtual === "Promoções" ? p.promo : p.categoria === categoriaAtual) && p.nome.toLowerCase().includes(termo));
+        let lista;
+
+        if(termo.length > 0) {
+            // PESQUISA GLOBAL (Ignora a categoria selecionada)
+            lista = db.filter(p => p.nome.toLowerCase().includes(termo) || p.id.toString().includes(termo));
+        } else {
+            // FILTRO POR ABA NORMAL
+            lista = db.filter(p => (categoriaAtual === "Promoções" ? p.promo : p.categoria === categoriaAtual));
+        }
+        
         let porPag = 10; let totalPags = Math.ceil(lista.length / porPag);
         let inicio = (paginaAtual - 1) * porPag;
         
